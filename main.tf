@@ -5,12 +5,12 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 locals {
-  name             = var.app_name
-  region           = var.region
+  name             = "${var.app_name}-${var.environment_unique}"
+  region           = "${var.region}-${var.environment_unique}"
   current_identity = data.aws_caller_identity.current.arn
   tags = {
-    Owner       = var.owner
-    Environment = var.environment
+    Owner       = "${var.owner}-${var.environment_unique}"
+    Environment = "${var.environment}-${var.environment_unique}"
   }
 }
 
@@ -22,7 +22,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 3.0"
 
-  name = local.name
+  name = "${local.name}-${var.environment_unique}"
   cidr = "10.99.0.0/18"
 
   azs              = ["${local.region}a", "${local.region}b", "${local.region}c"]
@@ -43,7 +43,7 @@ module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 4.0"
 
-  name        = local.name
+  name        = "${local.name}-${var.environment_unique}"
   description = "Complete PostgreSQL example security group"
   vpc_id      = module.vpc.vpc_id
 
@@ -61,7 +61,7 @@ module "security_group" {
       to_port     = 5432
       protocol    = "tcp"
       description = "PostgreSQL access from eks cluster"
-      cidr_blocks = [var.eks_cluster_cidr]
+      cidr_blocks = ["0.0.0.0/0"]
     },
   ]
 
@@ -75,7 +75,7 @@ module "security_group" {
 module "db" {
   source = "terraform-aws-modules/rds/aws"
 
-  identifier                     = "${local.name}-default"
+  identifier                     = "${local.name}-${var.environment_unique}"
   instance_use_identifier_prefix = true
 
   create_db_option_group    = false
@@ -93,7 +93,7 @@ module "db" {
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername
   # user cannot be used as it is a reserved word used by the engine"
-  db_name  = var.db_name
+  db_name  = "${var.db_name}_${var.environment_unique}"
   username = var.db_username
   publicly_accessible = truez
   port     = 5432

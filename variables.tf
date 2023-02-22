@@ -1,3 +1,9 @@
+variable "environment_unique" {
+    description = "Bunnyshell Environment Identifier"
+    type = string
+    default = null
+}
+
 variable "app_name" {
   type = string
 }
@@ -41,5 +47,5 @@ variable "instance_size" {
 variable "eks_cluster_cidr" {
     type = string
     default = "0.0.0.0/0"
-    
+
 }

@@ -1,7 +1,7 @@
 variable "environment_unique" {
     description = "Bunnyshell Environment Identifier"
     type = string
-    default = null
+    default = "unique101"
 }
 
 variable "app_name" {

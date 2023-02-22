@@ -6,7 +6,7 @@ data "aws_caller_identity" "current" {}
 
 locals {
   name             = "${var.app_name}-${var.environment_unique}"
-  region           = "${var.region}-${var.environment_unique}"
+  region           = "${var.region}"
   current_identity = data.aws_caller_identity.current.arn
   tags = {
     Owner       = "${var.owner}-${var.environment_unique}"
@@ -75,7 +75,7 @@ module "security_group" {
 module "db" {
   source = "terraform-aws-modules/rds/aws"
 
-  identifier                     = "${local.name}-${var.environment_unique}"
+  identifier                     = "${local.name}"
   instance_use_identifier_prefix = true
 
   create_db_option_group    = false

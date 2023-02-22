@@ -95,7 +95,7 @@ module "db" {
   # user cannot be used as it is a reserved word used by the engine"
   db_name  = "${var.db_name}_${var.environment_unique}"
   username = var.db_username
-  publicly_accessible = truez
+  publicly_accessible = true
   port     = 5432
 
   db_subnet_group_name   = module.vpc.database_subnet_group

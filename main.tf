@@ -56,6 +56,13 @@ module "security_group" {
       description = "PostgreSQL access from within VPC"
       cidr_blocks = module.vpc.vpc_cidr_block
     },
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "PostgreSQL access from eks cluster"
+      cidr_blocks = [var.eks_cluster_cidr]
+    },
   ]
 
   tags = local.tags
@@ -88,7 +95,7 @@ module "db" {
   # user cannot be used as it is a reserved word used by the engine"
   db_name  = var.db_name
   username = var.db_username
-  publicly_accessible = true
+  publicly_accessible = truez
   port     = 5432
 
   db_subnet_group_name   = module.vpc.database_subnet_group

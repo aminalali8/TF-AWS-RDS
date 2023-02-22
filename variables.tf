@@ -36,3 +36,10 @@ variable "instance_size" {
     error_message = "Approved instance sizes are: db.t2.micro, db.t3.micro."
   }
 }
+
+## added for eks
+variable "eks_cluster_cidr" {
+    type = string
+    default = "0.0.0.0/0"
+    
+}

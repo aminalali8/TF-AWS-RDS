@@ -43,6 +43,11 @@ variable "instance_size" {
   }
 }
 
+variable "additional_param" {
+    type = string
+    default = "test"
+}
+
 ## added for eks
 variable "eks_cluster_cidr" {
     type = string
